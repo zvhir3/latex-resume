@@ -1,0 +1,342 @@
+\documentclass[10pt, letterpaper]{article}
+% ---------------------------------------------------------
+%                        Package Imports
+% ---------------------------------------------------------
+\usepackage[
+    ignoreheadfoot,
+    top=2 cm,
+    bottom=2 cm,
+    left=2 cm,
+    right=2 cm,
+    footskip=1.0 cm,
+]{geometry}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{primaryColor}{RGB}{0, 0, 0}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage[
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} 
+\usepackage[pscoord]{eso-pic}
+\usepackage{calc}
+\usepackage{bookmark}
+\usepackage{lastpage} 
+\usepackage{changepage}
+\usepackage{paracol} 
+\usepackage{ifthen}
+\usepackage{needspace} 
+\usepackage{iftex}
+\usepackage{xparse}
+% ---------------------------------------------------------
+%                  PDF Accessibility Settings
+% ---------------------------------------------------------
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+% ---------------------------------------------------------
+%                    Font and Typography
+% ---------------------------------------------------------
+\usepackage{charter}
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt} 
+\setlength{\columnsep}{0.15cm}
+\pagenumbering{gobble}
+% ---------------------------------------------------------
+%                  Section Title Formatting
+% ---------------------------------------------------------
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing{\section}{
+    -1pt
+}{
+    0.3 cm
+}{
+    0.2 cm
+}
+% ---------------------------------------------------------
+%                      List Environments
+% ---------------------------------------------------------
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$}
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} 
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+}
+% ---------------------------------------------------------
+%                     Layout Environments
+% ---------------------------------------------------------
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0 cm + 0.00001 cm
+    }{
+        0 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} 
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+}
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+}
+% ---------------------------------------------------------
+%                          Header
+% ---------------------------------------------------------
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+}
+% ---------------------------------------------------------
+%                         Utilities
+% ---------------------------------------------------------
+\newcommand{\placelastupdatedtext}{
+\AddToShipoutPictureFG*{
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Last updated in \lastUpdatedMonth\ \lastUpdatedYear}\hspace{\widthof{Last updated in \lastUpdatedMonth\ \lastUpdatedYear}}
+    }}}%
+}
+}
+\let\hrefWithoutArrow\href
+% ---------------------------------------------------------
+%                   DYNAMIC DATA DEFINITION
+% ---------------------------------------------------------
+% Personal Information
+\newcommand{\fullName}{Zahiruddin Zainal}
+\newcommand{\location}{Kuala Lumpur, Malaysia}
+\newcommand{\email}{zahiruddin.developer@gmail.com}
+\newcommand{\phone}{+6016-558-5600}
+\newcommand{\lastUpdatedMonth}{September}
+\newcommand{\lastUpdatedYear}{2024}
+% Summary
+\newcommand{\personalSummary}{Mobile Developer with over four years of experience in software development specializing in Flutter, Dart, Swift, Kotlin, and Laravel. Skilled in working with teams from diverse backgrounds to deliver end products.}
+% Tech Stack
+\newcommand{\languagesFrameworks}{Dart, Swift, Objective-C, Kotlin, Laravel}
+\newcommand{\toolsPlatforms}{Git, Firebase, RealmDB, SQLite, MySQL}
+\newcommand{\architecturePatterns}{MVVM, Repository Pattern, Clean Architecture, Offline-First Architecture}
+% Education
+\newcommand{\universityName}{Universiti Tun Hussein Onn Malaysia}
+\newcommand{\degree}{Bachelor's Degree in Computer Science (Software Engineering) with Honours}
+\newcommand{\educationPeriod}{Jul 2017 – Jan 2021}
+\newcommand{\coursework}{Software Development Lifecycle (SDLC), Software Design and Architecture, Database Design and Management, Algorithms and Data Structures, Object-Oriented Programming (OOP)}
+% References
+\NewDocumentCommand{\addReference}{m m m m}{%
+    \begin{samepage}
+    \begin{twocolentry}{}
+        \textbf{#1}
+        \vspace{0.1 cm}
+    \end{twocolentry}
+    \begin{onecolentry}
+        #2\\
+        Email: #3
+    \end{onecolentry}
+    \end{samepage}
+    \vspace{0.2 cm}
+}
+% Certificates
+\NewDocumentCommand{\addCertificate}{m m}{%
+    \begin{samepage}
+    \begin{twocolentry}{}
+        \textbf{#1}
+    \end{twocolentry}
+    \vspace{0.1 cm}
+    \begin{onecolentry}
+        #2
+    \end{onecolentry}
+    \end{samepage}
+    \vspace{0.2 cm}
+}
+% Job entries
+\NewDocumentCommand{\addJob}{m m m m}{%
+    \vspace{0.2 cm}
+    \begin{twocolentry}{#2}
+    \textbf{#1}, #3
+    \end{twocolentry}
+    \vspace{0.1 cm}
+    \begin{onecolentry}
+    \begin{highlights}
+        #4
+    \end{highlights}
+    \end{onecolentry}
+}
+% ---------------------------------------------------------
+%                     Document Begins
+% ---------------------------------------------------------
+\begin{document}
+\newcommand{\AND}{\unskip
+	\cleaders\copy\ANDbox\hskip\wd\ANDbox
+	\ignorespaces
+}
+\newsavebox\ANDbox
+\sbox\ANDbox{$|$}
+% ---------------------------------------------------------
+%                     HEADER
+% ---------------------------------------------------------
+\placelastupdatedtext
+\begin{header}
+	\fontsize{25 pt}{25 pt}\selectfont \fullName\par
+	\vspace{5 pt}
+	\normalsize
+	\mbox{\location}%
+	\kern 5.0 pt%
+	\AND%
+	\kern 5.0 pt%
+	\mbox{\hrefWithoutArrow{mailto:\email}{\email}}%
+	\kern 5.0 pt%
+	\AND%
+	\kern 5.0 pt%
+	\mbox{\hrefWithoutArrow{tel:\phone}{\phone}}%
+	\kern 5.0 pt%
+\end{header}
+\vspace{5 pt - 0.3 cm}
+% ---------------------------------------------------------
+%                     SUMMARY
+% ---------------------------------------------------------
+\section{Summary}
+\begin{onecolentry}
+	\personalSummary
+\end{onecolentry}
+% ---------------------------------------------------------
+%                     EXPERIENCE
+% ---------------------------------------------------------
+\section{Experience}
+% Add jobs with the \addJob command
+% Params: position, period, company, bullet points
+\addJob{Mobile Developer}{Jan 2023 – Present}{Aerodyne Group}{
+	\item Developed real-time drone tracking using MQTT and Mapbox for telemetry and movement visualization.
+	\item Integrated RTMP video live streaming using DJI Mobile SDKs.
+	\item Established WebSocket communication for low-latency, real-time data exchange.
+	\item Applied MVVM architecture with an offline-first strategy.
+	\item Managed data using RealmDB, SQLite, and performed API integration via Alamofire with JWT authentication.
+	\item Implemented Crashlytics for crash monitoring, feature flagging, remote configuration, and forced updates.
+	\item Bridged Swift and Objective-C for seamless interoperability.
+	\item Set up development, staging, and production environments.
+	\item Managed daily tasks using Shortcut (ticketing), GitHub (version control), and Codemagic (CI/CD \& distribution).
+}
+\addJob{Mobile Developer}{Sept 2022 – Jan 2023}{Synapse Innovation Sdn Bhd (Acquired by Aerodyne Group)}{
+	\item Maintained and optimized an image processing mobile app built with Flutter.
+	\item Migrated CocoaPods dependencies to Swift Package Manager to improve build efficiency.
+	\item Implemented localization to support multi-language accessibility.
+	\item Designed and integrated backend services using RESTful APIs.
+	\item Developed and maintained a Laravel backend with caching and authentication.
+	\item Integrated Mapbox for real-time geospatial visualization.
+	\item Implemented automated email notifications using SendGrid.
+}
+\addJob{System Developer}{Sept 2021 – Sept 2022}{Wasiyyah Shoppe Berhad}{
+	\item Built a Document Management System (DMS) for legal document handling using Laravel.
+	\item Generated PDFs using FPDF and optimized task handling with Laravel Horizon and queues.
+	\item Developed \textit{MyWasiyyah}, a customer-facing app using Flutter, and deployed it to Google Play Store and App Store.
+	\item Implemented Firebase Cloud Messaging for push notifications.
+	\item Integrated Twilio for SMS verification and developed a password recovery module.
+	\item Developed \textit{UsraHDD}, a document management app using React Native.
+	\item Implemented authentication flows and eKYC verification.
+	\item Deployed face detection scripts using AWS Lambda.
+	\item Integrated a QR scanner for user registration.
+}
+\addJob{Software Developer (Internship)}{Jul 2020 – Dec 2020}{HeiTech Padu Berhad}{
+	\item Designed and implemented a secure digital document signing process.
+	\item Integrated authentication via the company's Active Directory (AD).
+	\item Enhanced frontend table features using DataTables.
+	\item Implemented page-read flags to monitor customer support activity.
+}
+% ---------------------------------------------------------
+%                     EDUCATION
+% ---------------------------------------------------------
+\vspace{0.1 cm}
+\section{Education}
+\vspace{0.1 cm}
+\begin{twocolentry}{\educationPeriod}
+	\textbf{\universityName}, \degree
+\end{twocolentry}
+\vspace{0.1 cm}
+\begin{onecolentry}
+	\begin{highlights}
+		\item \textbf{Coursework:} \coursework
+	\end{highlights}
+\end{onecolentry}
+% ---------------------------------------------------------
+%                     TECH STACK
+% ---------------------------------------------------------
+\section{Tech Stack}
+\begin{onecolentry}
+	\textbf{Languages \& Frameworks:} \languagesFrameworks
+\end{onecolentry}
+\vspace{0.2 cm}
+\begin{onecolentry}
+	\textbf{Tools \& Platforms:} \toolsPlatforms
+\end{onecolentry}
+\vspace{0.2 cm}
+\begin{onecolentry}
+	\textbf{Architecture \& Design Patterns:} \architecturePatterns
+\end{onecolentry}
+% ---------------------------------------------------------
+%                     CERTIFICATE
+% ---------------------------------------------------------
+\vspace{0.1 cm}
+\section{Certificates}
+\addCertificate{Apollo Leadership Programme (Aerodyne Group)}{
+	Personal development (goal-setting, decision-making, communication, teamwork), project management fundamentals, speaking with confidence (communication styles, storytelling), ethical leadership (ethics, responsibility, integrity), and effective meeting management (planning, stakeholder input).
+}
+\addCertificate{Problem Solving (Intermediate), Hacker Rank}{
+	Certified in solving intermediate-level challenges involving algorithms and data structures such as sorting, searching, dynamic programming, and graphs.
+}
+\addCertificate{Design Patterns in Swift, Udemy}{
+	Completed a comprehensive course on Design Patterns in Swift, covering SOLID principles, modern programming approaches, and practical applications.
+}
+% ---------------------------------------------------------
+%                     REFERENCES
+% ---------------------------------------------------------
+\vspace{0.1 cm}
+\section{References}
+\addReference{Muhammad Arif Jusoh}{Lead Mobile Engineer, Aerodyne Group}{arif.jusoh@aerodyne.group}{}
+\addReference{Ahmad Muhaimi Mohamad}{HOD, Lead Developer, Wasiyyah Shoppe Berhad}{muhaimi@wasiyyahshoppe.com.my}{}
+\addReference{Mohd Hairi Azly Harun}{Senior Software Developer, HeiTech Padu Berhad}{hairyazly@heitech.com.my}{}
+\end{document}
